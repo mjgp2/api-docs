@@ -60,6 +60,63 @@ Your end URL looks would look like:
             {
                 "code": "NOT_AUTHORIZED"
             }
+ 
+## API key administration [/auth/apikeyadmin?{password}]
+
+### New API key [POST]
+
++ Parameters
+    + password (string) ... Your current password
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "apiKey": "THE_NEW_API_KEY"
+            }
+
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+ 
+### Get API key [GET]
+
++ Parameters
+    + password (string) ... Your current password
+    
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "apiKey": "THE_NEW_API_KEY"
+            }
+            
++ Response 400 (application/json)
+
+    + Body
+    
+            {
+                "code": "NO_API_KEY"
+            }
+            
+            
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
            
 # Group Store APIs
 
@@ -806,7 +863,7 @@ You can also pass through fields filters as query string parameters for filterab
 
 There may be default values for inputs, e.g. the URL you extracted data from. 
 You can see the defaults in the schema for the relevent connector version. 
-The current version of the connector is available in the connector object.
+The current version of the connector is available in the "data" object.
 
 _Would you like to query specific versions of a connector? Contact support@import.io for details of when we release this!_
 
