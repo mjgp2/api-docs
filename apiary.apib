@@ -868,6 +868,9 @@ https://api.import.io/store/connector/d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249/_quer
             
 ### POST Query [POST]
 
+You can pass up cookies to use for a query in the input object optionally. This is shown in the example.
+This feature is required if you are using authenticated APIs and maintaining a session between calls.
+
 + Parameters
     + id (uuid) ... ID of the API you are querying.
     + format (optional, string) ... One of "XML" and "HTML"
@@ -881,6 +884,14 @@ https://api.import.io/store/connector/d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249/_quer
             {
                 "input": {
                     "webpage/url": "http://cdn.import.io/test/pages/basic/index.html"
+                },
+                "additionalInput": {
+                    "YOUR CONNECTOR GUID HERE": {
+                      "cookies": [
+                            "a-ogbcbff=\"1\";Path=\"/\";Domain=\"the-domain\"",
+                            "session-id=\"275-7129127-0118018\";Path=\"/\";Domain=\"the-domain\""
+                      ]
+                    }
                 }
             }
 
