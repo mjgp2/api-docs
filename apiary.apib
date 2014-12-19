@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://api.import.io
+HOST: 
 
 # import.io Platform APIs
 
@@ -16,7 +16,7 @@ You can log into import.io and use cookie-based sessions.
 You may add API key to any URL such as:
 
 ```
-https://api.import.io/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_apikey=YOUR_API_KEY
+/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_apikey=YOUR_API_KEY
 ```
 
 ## Signed URLs
@@ -30,7 +30,7 @@ GET https://api.import.io/store/connector/_search?_mine=true&_user=YOUR_USER_GUI
 Your end URL looks would look like:
 
 ```
-https://api.import.io/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_expiry=1579512584000&_digest=42qMVKvRcJ1vQBCwVcw7cYO161Q%3D
+/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_expiry=1579512584000&_digest=42qMVKvRcJ1vQBCwVcw7cYO161Q%3D
 ```
 
 # Group Store APIs
@@ -785,7 +785,7 @@ _Would you like to query specific versions of a connector? Contact support@impor
 Example schema:
 
 ```
-https://api.import.io/store/connectorVersion/b28354a5-dd3f-4207-bc2f-61bccd7d4d24/schema
+/store/connectorVersion/b28354a5-dd3f-4207-bc2f-61bccd7d4d24/schema
 
 {
     "guid": "b28354a5-dd3f-4207-bc2f-61bccd7d4d24",
@@ -825,7 +825,7 @@ Some Connectors will not support pagination over the REST API, but will need to 
 If using the GET API, you specific your inputs as "input/{inputname}" parameters, e.g.
 
 ```
-https://api.import.io/store/connector/d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249/_query?input/webpage/url=http%3A%2F%2Fcdn.import.io%2Ftest%2Fpages%2Fbasic%2Findex.html
+/store/connector/d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249/_query?input/webpage/url=http%3A%2F%2Fcdn.import.io%2Ftest%2Fpages%2Fbasic%2Findex.html
 ```
 
 + Parameters
