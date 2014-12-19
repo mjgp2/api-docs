@@ -1,0 +1,686 @@
+FORMAT: 1A
+HOST: https://api.import.io
+
+# import.io Platform APIs
+
+This is *draft* documentation.
+
+# Group Store APIs
+
+Available classes:
+
+* User
+* Data
+* ConnectorVersion
+
+## Create object [/store/{class}]
+
+### Create object [POST]
+
++ Parameters
+    + class (string) ... Class of the object
+
++ Request (application/json)
+
+    + Body
+                
+            {
+                "foo"              : "foobar",
+                "bar"              : [2,4,72]
+            }
+
+    
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "_meta": {
+                    "timestamp":         1418985781253,
+                    "lastEditorGuid":    "cb0a269e-3dbc-47d5-ae18-a6c10e70839f",
+                    "ownerGuid":         "f2eaf873-0dce-4f43-a60e-51be115c9e62"
+                },
+                "guid"             : "89722d3d-7a7e-44da-9610-63f372642503",
+                "foo"              : "foobar",
+                "bar"              : [2,4,72]
+            }
+
++ Response 400 (application/json)
+
+    + Body
+    
+            {
+                "error": "Validation error.",
+                "code": "NOT_VALID",
+                "data": {
+                    "foo": "The field cannot be empty"
+                }
+            }
+
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
++ Response 403 (application/json)
+
+    You do not have the permissions required.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
+
++ Response 404 (application/json)
+
+    + Body
+    
+            {
+                "error": "No such bucket.",
+                "code": "NO_SUCH_BUCKET"
+            }
+
+## List objects [/store/{class}?{id},{index_offset}]
+
+List all (requires the LIST permission), or list specific (requires READ permission).
+
+### List objects [GET]
+
++ Parameters
+    + class (string, `user`) ... Class of the object
+    + id (string, optional) ... Specific IDs to list (multi-valued)
+    + index_offset (string, optional) ... Offset index if paging
+    
++ Response 200 (application/json)
+
+    + Body
+                
+            [
+                {
+                    "_meta": {
+                        "timestamp":         1418985786954,
+                        "creationTimestamp": 1418985781253,
+                        "creatorGuid":       "1cb21b37-d5da-4a77-add6-622fa1f7c34b",
+                        "lastEditorGuid":    "cb0a269e-3dbc-47d5-ae18-a6c10e70839f",
+                        "ownerGuid":         "f2eaf873-0dce-4f43-a60e-51be115c9e62"
+                    },
+                    "guid"             : "89722d3d-7a7e-44da-9610-63f372642503",
+                    "foo"              : "foobar",
+                    "bar"              : [34]
+                },
+                {
+                    "_meta": {
+                        "timestamp":         1418985786955,
+                        "creationTimestamp": 1418985781254,
+                        "creatorGuid":       "2cb21b37-d5da-4a77-add6-622fa1f7c34b",
+                        "lastEditorGuid":    "db0a269e-3dbc-47d5-ae18-a6c10e70839f",
+                        "ownerGuid":         "02eaf873-0dce-4f43-a60e-51be115c9e62"
+                    },
+                    "guid"             : "79722d3d-7a7e-44da-9610-63f372642503",
+                    "foo"              : "barfoo",
+                    "bar"              : [23]
+                }
+            ]
+
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
++ Response 403 (application/json)
+
+    You do not have the permissions required.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
+
++ Response 404 (application/json)
+
+    + Body
+    
+            {
+                "error": "No such bucket.",
+                "code": "NO_SUCH_BUCKET"
+            }
+            
+## Get Labels [/store/{class}/_labels?{id}]
+
+Some objects you may not have read access on, but you can read a display label for them.
+
+### Get labels [GET]
+
++ Parameters
+    + class (string, `user`) ... Class of the object
+    + id (string) ... ID of the object (multi-valued)
+    
++ Response 200 (application/json)
+
+    + Body
+                
+            [
+                {
+                    "guid": "0003161e-0ced-420b-8e4b-253193ddf1e6",
+                    "label": "user3648496"
+                },
+                {
+                    "guid": "0003d058-3230-467c-aabf-f272b9cd622f",
+                    "label": "webtech"
+                }
+            ]
+
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
++ Response 403 (application/json)
+
+    You do not have the permissions required.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
+
++ Response 404 (application/json)
+
+    + Body
+    
+            {
+                "error": "No such bucket.",
+                "code": "NO_SUCH_BUCKET"
+            }
+
+
+## Get Schema [/store/{class}/_schema]
+
+### Get schema [POST]
+
++ Parameters
+    + class (string) ... Class of the object
+
+    
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "type": "object",
+                "properties": {
+                    "foo": {
+                        "type": "string",
+                        "maxLength": 20.
+                        "description": "A description of the foobar"
+                    },
+                    "bar": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "maxItems": 10,
+                        "description": "Some numbers representing something"
+                    }
+                    "_meta": {
+                        "type": "object",
+                        "properties": {
+                            "timestamp": {
+                                "type": "integer",
+                                "format": "utc-millisec",
+                                "required": true
+                            },
+                            "orgGuid": {
+                                "type": "string",
+                                "required": true,
+                                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+                            },
+                            "creatorGuid": {
+                                "type": "string",
+                                "required": true,
+                                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+                            },
+                            "patchTimestamp": {
+                                "type": "integer",
+                                "format": "utc-millisec"
+                            },
+                            "ownerGuid": {
+                                "type": "string",
+                                "required": true,
+                                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+                            },
+                            "creationTimestamp": {
+                                "type": "integer",
+                                "format": "utc-millisec",
+                                "required": true
+                            },
+                            "lastEditorGuid": {
+                                "type": "string",
+                                "required": true,
+                                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+                            },
+                            "objectGuid": {
+                                "type": "string",
+                                "required": true,
+                                "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+                            }
+                        },
+                        "additionalProperties": false,
+                        "readOnly": true
+                    }
+                },
+                "name": "FooBar",
+                "additionalProperties": false,
+                "acl": {
+                    "ADMIN": {
+                        "permissions": ["UPDATE", "CREATE", "CHANGE_OWNER", "SEARCH"]
+                    },
+                    "_OWNER": {
+                        "readOnly": ["bar"],
+                        "permissions": ["UPDATE", "SEARCH"]
+                    },
+                    "_ORG": {
+                        "permissions": ["CREATE", "READ"]
+                    }
+                }
+            }
+
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
++ Response 403 (application/json)
+
+    You do not have the permissions required.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
+
++ Response 404 (application/json)
+
+    + Body
+    
+            {
+                "error": "No such bucket.",
+                "code": "NO_SUCH_BUCKET"
+            }
+
+## Object operations [/store/{class}/{id}?{child},{timestamp}]
+
+A single Data Source object.
+
+Has an ACL that only allows org users with the DATA role to execute this action.
+
+### Get Object [GET]
+
++ Parameters
+    + id (uuid) ... ID of the object
+    + class (string) ... Class of the object
+    + child (optional, string) ... Child objects to inline (multi-valued)
+    
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "_meta": {
+                    "timestamp":         1418985786954,
+                    "creationTimestamp": 1418985781253,
+                    "creatorGuid":       "1cb21b37-d5da-4a77-add6-622fa1f7c34b",
+                    "lastEditorGuid":    "cb0a269e-3dbc-47d5-ae18-a6c10e70839f",
+                    "ownerGuid":         "f2eaf873-0dce-4f43-a60e-51be115c9e62"
+                },
+                "guid"             : "89722d3d-7a7e-44da-9610-63f372642503",
+                "foo"              : "foobar",
+                "bar"              : [34.23]
+            }
+    
+    
++ Response 400 (application/json)
+
+    There are validation errors of parameters or body.
+
+    + Body
+    
+            {
+                "error": "Validation error.",
+                "code": "NOT_VALID",
+                "data": {
+                    "foo": "The field cannot be empty"
+                }
+            }
+   
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
++ Response 403 (application/json)
+
+    You do not have the permissions required.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
+            
++ Response 404 (application/json)
+
+    + Body
+    
+            {
+                "error": "Object not found.",
+                "code": "NO_SUCH_OBJECT"
+            }
+           
++ Response 409 (application/json)
+
+    There is a constraint exception, such as timestamp or unique fields.
+
+    + Body
+    
+            {
+                "error": "Timestamp does not match.",
+                "code": "BAD_TIMESTAMP"
+            }
+
+### Update Object [PATCH]
+
++ Parameters
+    + id (uuid) ... GUID of the Data Source
+    + class (string) ... Class of the object
+    + timestamp (long, optional) ... Required timestamp of the object
+
++ Request (application/json)
+
+    + Body
+                
+            {
+                "foo"           : "barfoo"
+            }
+            
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "_meta": {
+                    "patchTimestamp": 1413931371679,
+                    "timestamp": 1413931371680,
+                    "lastEditorGuid": "0003161e-0ced-420b-8e4b-253193ddf1e6"
+                },
+                "guid"          : "cc6596c7-b3b4-4750-9143-aa4d597ac30e",
+                "foo"           : "barfoo"
+            }
+    
++ Response 400 (application/json)
+
+    There are validation errors of parameters or body.
+
+    + Body
+    
+            {
+                "error": "Validation error.",
+                "code": "NOT_VALID",
+                "data": {
+                    "foo": "The field cannot be empty"
+                }
+            }
+   
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
++ Response 403 (application/json)
+
+    You do not have the permissions required.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
+            
++ Response 404 (application/json)
+
+    + Body
+    
+            {
+                "error": "Object not found.",
+                "code": "NO_SUCH_OBJECT"
+            }
+           
++ Response 409 (application/json)
+
+    There is a constraint exception, such as timestamp or unique fields.
+
+    + Body
+    
+            {
+                "error": "Timestamp does not match.",
+                "code": "BAD_TIMESTAMP"
+            }
+
+           
+### Delete Object [DELETE]
+
++ Parameters
+    + class (string) ... Class of the object
+    + id (uuid) ... ID of the object
+    
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "_meta": {
+                    "patchTimestamp": 1413931371679,
+                    "timestamp": 1413931371680,
+                    "lastEditorGuid": "0003161e-0ced-420b-8e4b-253193ddf1e6"
+                },
+                "guid"          : "cc6596c7-b3b4-4750-9143-aa4d597ac30e",
+                "foo"           : "barfoo"
+            }
+            
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
++ Response 403 (application/json)
+
+    You do not have the permissions required.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
+            
++ Response 404 (application/json)
+
+    + Body
+    
+            {
+                "error": "Object not found.",
+                "code": "NO_SUCH_OBJECT"
+            }
+            
+## Get Attachment [/store/{class}/{id}/_attachment/{field}/{attachmentId}]
+
+### Get Attachment [GET]
+
++ Parameters
+    + class (string) ... Class of the object
+    + id (uuid) ... ID of the Object
+    + field (string) ... The field name of the attachment in the object
+    + attachmentId (uuid) ... ID of the attachment version (value of "field")
+    
++ Response 200
+
+    + Headers
+
+            Content-Encoding: gzip
+            
+### Get Attachment Head [HEAD]
+
++ Parameters
+    + class (string) ... Class of the object
+    + id (uuid) ... ID of the Object
+    + field (string) ... The field name of the attachment in the object
+    + attachmentId (uuid) ... ID of the attachment version (value of "field")
+    
++ Response 200
+
+## New Attachment Version [/store/{class}/{id}/_attachment/{field}]
+
+### New Attachment Version [PUT]
+
++ Parameters
+    + class (string) ... Class of the object
+    + id (uuid) ... ID of the Object
+    + field (string) ... The field name of the attachment in the object
+    
++ Request (application/json)
+
+    + Body
+                
+            {
+                "someKey"             : "Some value."
+            }
+
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "guid" : "8bc3ccc3-c607-4fe9-a0aa-843395b07217"
+            }
+            
+## Search [/store/{class}/_search{?_page,_perpage,_sort,_sortDirection,q,_exists,_missing,_field,_type,_default_operator,_mine,_facet}]
+
+You can also pass through fields filters as query string parameters for filterable fields.
+
+Note: You can only facet on some fields, and currently these fields are not exposed through the schema (we have a ticket for this).
+
+### Search [GET]
+
++ Parameters
+    + class (string) ... Class of the object
+    + _page (optional, int) ... The page to return
+    + _perpage (optional, integer) ... Up to 100, default 20
+    + _sort (optional, string) ... The field to sort upon, e.g. _meta.creationTimestamp
+    + _sortDirection (optional, string) ... Direction of sort; ASC or DESC (default)
+    + _exists (optional, string) ... Required fields (multi-valued)
+    + _missing (optional, string) ... Fields that must be null (multi-valued)
+    + _facet (optional, string) ... Fields that should have facets produced (multi-valued)
+    + _field (optional, string) ... Field to operate on
+    + _type (optional, string) ... One of "match_phrase" or "term"
+    + _default_operator (optional, string) ... One of "AND" or "OR" (default: OR)
+    + _mine (optional, string) ... Restrict to just the objects you own if "true"
+    + q (optional, string) ... An elasticsearch query string query
+
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "hits": {
+                    "total": 1,
+                    "hits": [
+                        {
+                            "_type": "FooBar",
+                            "_id": "cc6596c7-b3b4-4750-9143-aa4d597ac30e",
+                            "_score": 1.0,
+                            "fields": {
+                                "_meta": {
+                                    "timestamp":         1418985786954,
+                                    "creationTimestamp": 1418985781253,
+                                    "creatorGuid":       "1cb21b37-d5da-4a77-add6-622fa1f7c34b",
+                                    "lastEditorGuid":    "cb0a269e-3dbc-47d5-ae18-a6c10e70839f",
+                                    "ownerGuid":         "f2eaf873-0dce-4f43-a60e-51be115c9e62"
+                                },
+                                "foo"              : "foobar",
+                                "bar"              : [34.23]
+                            }
+                        }
+                    ]
+                }
+            }
+            
+## Count [/store/{class}/_count{?q,_exists,_missing,_field,_type,_default_operator,_mine}]
+
+You can also pass through fields filters as query string parameters for filterable fields, e.g. 
+
+### Count [GET]
+
++ Parameters
+    + class (string) ... Class of the object
+    + _exists (optional, string) ... Required fields (multi-valued)
+    + _missing (optional, string) ... Fields that must be null (multi-valued)
+    + _field (optional, string) ... Field to operate on
+    + _type (optional, string) ... One of "match_phrase" or "term"
+    + _default_operator (optional, string) ... One of "AND" or "OR" (default: OR)
+    + _mine (optional, string) ... Restrict to just the objects you own if "true"
+    + q (optional, string) ... An elasticsearch query string query
+
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "count": 100
+            }
+            
