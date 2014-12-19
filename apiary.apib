@@ -35,13 +35,18 @@ https://api.import.io/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_e
 
 # Group Store APIs
 
+The store is split into classes, and each class has its own schema, ACL, validation, etc.
+
+A class may have child fields, which are 1:1 related objects that are classes in their own right.
+These can be inlined within GET APIs, and updated atomically with the parent.
+
 Available public classes:
 
 * user
 * data
 * connectorVersion
-  * connectorVersion/schema
-  * connectorVersion/tests
+  * connectorVersion/schema  (child)
+  * connectorVersion/tests   (child)
 
 ## Create object [/store/{class}]
 
