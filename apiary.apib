@@ -298,6 +298,39 @@ This feature is required if you are using authenticated APIs and maintaining a s
                 "pageUrl": "http://cdn.import.io/test/pages/basic/index.html"
             }
            
+## Login API [/store/data/{id}/_login]
+
+This API logs into the target site for an authenticated API. Pass the cookies back through a POST query to use the authenticated session.
+
+### Login [POST]
+
++ Parameters
+    + id (uuid) ... ID of the API you are querying.
+
++ Request (application/json)
+
+    + Body
+                
+            {
+                "target-domain.com": {
+                    "username" : "foo",
+                    "password" : "bar"
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "cookies": [
+                    "a-ogbcbff=\"1\";Path=\"/\";Domain=\"the-domain\"",
+                    "session-id=\"275-7129127-0118018\";Path=\"/\";Domain=\"the-domain\""
+                ],
+                "connectorVersionGuid": "b28354a5-dd3f-4207-bc2f-61bccd7d4d24",
+                "connectorGuid": "d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249"
+            }
+           
 # Group Store APIs
 
 The store is split into classes, and each class has its own schema, ACL, validation, etc.
