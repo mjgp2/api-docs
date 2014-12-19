@@ -371,7 +371,7 @@ Some objects you may not have read access on, but you can read a display label f
                 "code": "NO_SUCH_BUCKET"
             }
 
-## Object operations [/store/{class}/{id}?{child},{timestamp}]
+## Object operations [/store/{class}/{id}/{child}?{child},{timestamp}]
 
 A single Data Source object.
 
@@ -382,7 +382,7 @@ Has an ACL that only allows org users with the DATA role to execute this action.
 + Parameters
     + id (uuid) ... ID of the object
     + class (string) ... Class of the object
-    + child (optional, string) ... Child objects to inline (multi-valued)
+    + child (optional, string) ... Child object(s) to inline or operate upon
     
 + Response 200 (application/json)
 
@@ -772,3 +772,139 @@ You can also pass through fields filters as query string parameters for filterab
                 "count": 100
             }
             
+# Group Query APIs
+
+## Query API [/store/data/{id}/_query]
+
+There may be default values for inputs, e.g. the URL you extracted data from. 
+You can see the defaults in the schema for the relevent connector version. 
+The current version of the connector is available in the connector object.
+
+_Would you like to query specific versions of a connector? Contact support@import.io for details of when we release this!_
+
+Example schema:
+
+```
+https://api.import.io/store/connectorVersion/b28354a5-dd3f-4207-bc2f-61bccd7d4d24/schema
+
+{
+    "guid": "b28354a5-dd3f-4207-bc2f-61bccd7d4d24",
+    "inputProperties": [
+        {
+            "name": "webpage/url",
+            "type": "URL",
+            "defaultValue": "http://cdn.import.io/test/pages/basic/index.html"
+        }
+    ],
+    "outputProperties": [
+        {
+            "name": "name",
+            "type": "STRING"
+        },
+        {
+            "name": "position",
+            "type": "STRING"
+        },
+        {
+            "name": "bio",
+            "type": "STRING"
+        },
+        {
+            "name": "picture",
+            "type": "IMAGE"
+        }
+    ]
+}
+
+```
+
+### GET Query [GET]
+
+If using the GET API, you specific your inputs as "input/{inputname}" parameters, e.g.
+
+```
+https://api.import.io/store/connector/d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249/_query?input/webpage/url=http%3A%2F%2Fcdn.import.io%2Ftest%2Fpages%2Fbasic%2Findex.html
+```
+
++ Parameters
+    + id (uuid) ... ID of the API you are querying.
+
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "offset": 0,
+                "results": [
+                    {
+                        "name": "David White",
+                        "bio": "David started his career in technology with EDS, undertaking various management roles inside this large outsourcer. Following a number of successful years at EDS he was tempted by the freedom of contracting and consulted for several FTSE 100 companies including Glaxo Smith Kline. David then made the move into financial services taking on the role of Head of Technology Relationship Management for RBS Corporate Banking & Financial Markets. His promotion to the Head of Innovation Technology led to collaboration with Andrew Fogg. Later, together with programming guru Matthew Painter, they founded Kusiri before their next enterprise, import•io, Innovative and articulate, David is an essential ingredient to the import•io management mix.",
+                        "position": "CEO",
+                        "picture": "https://d3sgt82prjfpwv.cloudfront.net/website/140/img/team/david.png"
+                    },
+                    {
+                        "name": "Andrew Fogg",
+                        "bio": "A scientist by training, Andrew has worked with data his entire career in both business and academia for organisations including Microsoft Research, Barclays Capital, Cambridge University and the Wellcome Trust. Andrew founded the Technology Innovation group at RBS with David and they have worked together ever since. After leaving RBS Andrew and David started Kusiri with Matt Painter. As a data evangelist for import•io, Andrew is responsible for connecting with the users and bringing the product to the world.",
+                        "position": "Chief Data Officer",
+                        "picture": "https://d3sgt82prjfpwv.cloudfront.net/website/140/img/team/andrew.png"
+                    },
+                    {
+                        "name": "Matt Painter",
+                        "bio": "Matt had his first computer aged five, and started programming shortly after. He graduated with First Class honours in Mathematics and Computer Science from Cambridge University, where he met Andrew. After graduating he became CTO for a start-up that supplied universities with websites and other IT features in return for data they then sold to recruiters. He was a consultant for Sapient before joining Yahoo! in 2006 as Senior Engineer and Product Architect of a Yelp competitor. Along with David and Andrew, Matt founded Kusiri in 2009, and later import•io. As CTO of import•io he provides engineering leadership to an ever-growing team.",
+                        "position": "Chief Technology Officer",
+                        "picture": "https://d3sgt82prjfpwv.cloudfront.net/website/140/img/team/mattp.png"
+                    }
+                ],
+                "cookies": [],
+                "connectorVersionGuid": "b28354a5-dd3f-4207-bc2f-61bccd7d4d24",
+                "connectorGuid": "d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249",
+                "pageUrl": "http://cdn.import.io/test/pages/basic/index.html"
+            }
+            
+### POST Query [POST]
+
++ Parameters
+    + id (uuid) ... ID of the API you are querying.
+
++ Request (application/json)
+
+    + Body
+                
+            {
+                "input": {
+                    "webpage/url": "http://cdn.import.io/test/pages/basic/index.html"
+                }
+            }
+
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+                "offset": 0,
+                "results": [
+                    {
+                        "name": "David White",
+                        "bio": "David started his career in technology with EDS, undertaking various management roles inside this large outsourcer. Following a number of successful years at EDS he was tempted by the freedom of contracting and consulted for several FTSE 100 companies including Glaxo Smith Kline. David then made the move into financial services taking on the role of Head of Technology Relationship Management for RBS Corporate Banking & Financial Markets. His promotion to the Head of Innovation Technology led to collaboration with Andrew Fogg. Later, together with programming guru Matthew Painter, they founded Kusiri before their next enterprise, import•io, Innovative and articulate, David is an essential ingredient to the import•io management mix.",
+                        "position": "CEO",
+                        "picture": "https://d3sgt82prjfpwv.cloudfront.net/website/140/img/team/david.png"
+                    },
+                    {
+                        "name": "Andrew Fogg",
+                        "bio": "A scientist by training, Andrew has worked with data his entire career in both business and academia for organisations including Microsoft Research, Barclays Capital, Cambridge University and the Wellcome Trust. Andrew founded the Technology Innovation group at RBS with David and they have worked together ever since. After leaving RBS Andrew and David started Kusiri with Matt Painter. As a data evangelist for import•io, Andrew is responsible for connecting with the users and bringing the product to the world.",
+                        "position": "Chief Data Officer",
+                        "picture": "https://d3sgt82prjfpwv.cloudfront.net/website/140/img/team/andrew.png"
+                    },
+                    {
+                        "name": "Matt Painter",
+                        "bio": "Matt had his first computer aged five, and started programming shortly after. He graduated with First Class honours in Mathematics and Computer Science from Cambridge University, where he met Andrew. After graduating he became CTO for a start-up that supplied universities with websites and other IT features in return for data they then sold to recruiters. He was a consultant for Sapient before joining Yahoo! in 2006 as Senior Engineer and Product Architect of a Yelp competitor. Along with David and Andrew, Matt founded Kusiri in 2009, and later import•io. As CTO of import•io he provides engineering leadership to an ever-growing team.",
+                        "position": "Chief Technology Officer",
+                        "picture": "https://d3sgt82prjfpwv.cloudfront.net/website/140/img/team/mattp.png"
+                    }
+                ],
+                "cookies": [],
+                "connectorVersionGuid": "b28354a5-dd3f-4207-bc2f-61bccd7d4d24",
+                "connectorGuid": "d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249",
+                "pageUrl": "http://cdn.import.io/test/pages/basic/index.html"
+            }
+                       
