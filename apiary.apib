@@ -33,6 +33,34 @@ Your end URL looks would look like:
 /store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_expiry=1579512584000&_digest=42qMVKvRcJ1vQBCwVcw7cYO161Q%3D
 ```
 
+## Current session [/auth/currentuser]
+
+### Get session user [GET]
+
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "guid": "e3aff240-8780-11e4-b4a9-0800200c9a66",
+                "username": "foobart",
+                "email": "foobart@import.io",
+                "roles": [
+                    "USER"
+                ],
+                "orgGuid": "00000000-0000-0000-0000-000000000000"
+            }
+            
++ Response 401 (application/json)
+
+    There is no user session.
+
+    + Body
+    
+            {
+                "code": "NOT_AUTHORIZED"
+            }
+           
 # Group Store APIs
 
 The store is split into classes, and each class has its own schema, ACL, validation, etc.
