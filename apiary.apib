@@ -5,6 +5,34 @@ HOST: https://api.import.io
 
 This is *draft* documentation.
 
+# Group authentication
+
+## Session
+
+You can log into import.io and use cookie-based sessions.
+
+## API Key
+
+You may add API key to any URL such as:
+
+```
+https://api.import.io/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_apikey=YOUR_API_KEY
+```
+
+## Signed URLs
+
+If you want to share a URL without disclosing your API key you can sign the verb and URL with an expiry using HMAC SHA-1, e.g.
+
+```
+GET https://api.import.io/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_expiry=1579512584000
+```
+
+Your end URL looks would look like:
+
+```
+https://api.import.io/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_expiry=1579512584000&_digest=42qMVKvRcJ1vQBCwVcw7cYO161Q%3D
+```
+
 # Group Store APIs
 
 Available classes:
@@ -12,6 +40,7 @@ Available classes:
 * User
 * Data
 * ConnectorVersion
+* Attachment
 
 ## Create object [/store/{class}]
 
