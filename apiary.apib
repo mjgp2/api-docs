@@ -5,7 +5,7 @@ HOST: https://api.import.io
 
 This is *draft* documentation.
 
-# Group authentication
+# Group Authentication
 
 ## Session
 
@@ -35,12 +35,13 @@ https://api.import.io/store/connector/_search?_mine=true&_user=YOUR_USER_GUID&_e
 
 # Group Store APIs
 
-Available classes:
+Available public classes:
 
-* User
-* Data
-* ConnectorVersion
-* Attachment
+* user
+* data
+* connectorVersion
+  * connectorVersion/schema
+  * connectorVersion/tests
 
 ## Create object [/store/{class}]
 
@@ -639,6 +640,8 @@ Has an ACL that only allows org users with the DATA role to execute this action.
             }
       
 ## Attachment Version History [/store/{class}/{id}/_attachment/{field}/_history]
+
+Attachments may have "info" saved with them by the system, the example below shows an example of this.
 
 ### Attachment Version History [GET]
 
