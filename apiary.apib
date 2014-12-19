@@ -774,7 +774,7 @@ You can also pass through fields filters as query string parameters for filterab
             
 # Group Query APIs
 
-## Query API [/store/data/{id}/_query]
+## Query API [/store/data/{id}/_query?{format},{page},{asObjects}]
 
 There may be default values for inputs, e.g. the URL you extracted data from. 
 You can see the defaults in the schema for the relevent connector version. 
@@ -818,6 +818,8 @@ https://api.import.io/store/connectorVersion/b28354a5-dd3f-4207-bc2f-61bccd7d4d2
 
 ```
 
+Some Connectors will not support pagination over the REST API, but will need to use a client library. This is because state from page to page is required, e.g. complex AJAX pagination.
+
 ### GET Query [GET]
 
 If using the GET API, you specific your inputs as "input/{inputname}" parameters, e.g.
@@ -828,6 +830,9 @@ https://api.import.io/store/connector/d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249/_quer
 
 + Parameters
     + id (uuid) ... ID of the API you are querying.
+    + format (string, optional) ... One of "XML" and "HTML"
+    + page (optional, integer) ... The page you require
+    + asObjects (optional, boolean) ... Whether or not to "deflatten" objects
 
 + Response 200 (application/json)
 
@@ -865,6 +870,9 @@ https://api.import.io/store/connector/d50aff7b-ad19-4f64-ab1a-1e8f9a1bb249/_quer
 
 + Parameters
     + id (uuid) ... ID of the API you are querying.
+    + format (optional, string) ... One of "XML" and "HTML"
+    + page (optional, integer) ... The page you require
+    + asObjects (optional, boolean) ... Whether or not to "deflatten" objects
 
 + Request (application/json)
 
