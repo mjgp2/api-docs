@@ -637,6 +637,57 @@ Has an ACL that only allows org users with the DATA role to execute this action.
             {
                 "guid" : "8bc3ccc3-c607-4fe9-a0aa-843395b07217"
             }
+      
+## Attachment Version History [/store/{class}/{id}/_attachment/{field}/_history]
+
+### Attachment Version History [GET]
+
++ Parameters
+    + class (string) ... Class of the object
+    + id (uuid) ... ID of the Object
+    + field (string) ... The field name of the attachment in the object
+    
++ Response 200 (application/json)
+
+    + Body
+                
+            {
+              "hits": {
+                "total": 2,
+                "max_score": 1,
+                "hits": [
+                  {
+                    "_index": "00000000-0000-0000-0000-000000000000",
+                    "_type": "Attachment",
+                    "_id": "865e1307-91da-4eaa-ac92-08b971e363a2",
+                    "_score": 1,
+                    "fields": {
+                      "info": {
+                        "status": "WORKING",
+                        "responseTime": 538,
+                        "cpuTime": 18
+                      },
+                      "size": 256
+                    }
+                  },
+                  {
+                    "_index": "00000000-0000-0000-0000-000000000000",
+                    "_type": "Attachment",
+                    "_id": "965e1307-91da-4eaa-ac92-08b971e363a2",
+                    "_score": 1,
+                    "fields": {
+                      "info": {
+                        "status": "WORKING",
+                        "responseTime": 638,
+                        "cpuTime": 18
+                      },
+                      "size": 257
+                    }
+                  }
+                ]
+              }
+            }
+
             
 ## Search [/store/{class}/_search{?_page,_perpage,_sort,_sortDirection,q,_exists,_missing,_field,_type,_default_operator,_mine,_facet}]
 
